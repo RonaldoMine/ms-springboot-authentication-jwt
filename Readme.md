@@ -1,4 +1,4 @@
-# Spring Boot Authentication using JWT with Roles USER and ADMIN
+# Microservice - Spring Boot Authentication using JWT with Roles USER and ADMIN
 
 ### SignUp
 ![Sign_Up API](sign-up-api.png)

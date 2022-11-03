@@ -13,8 +13,6 @@ import java.util.stream.Collectors;
 
 public class UserDetailsImplement implements UserDetails {
 
-    private static final long SERIAL_VERSION_ID = 1L;
-
     private Long id;
 
     private String username;

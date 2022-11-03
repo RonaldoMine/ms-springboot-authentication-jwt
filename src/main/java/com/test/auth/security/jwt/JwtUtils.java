@@ -7,7 +7,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 
 @Component
@@ -20,6 +22,11 @@ public class JwtUtils {
     @Value("${app.jwtExpirationMs}")
     private long jwtExpirationMs;
 
+    /**
+     * Generate Token by username
+     * @param authentication to get full authenticated user
+     * @return String
+     */
     public String generateToken(Authentication authentication) {
         UserDetailsImplement userDetailsImplement = (UserDetailsImplement) authentication.getPrincipal();
         Date expiration_date = new Date();
@@ -34,10 +41,20 @@ public class JwtUtils {
                 .compact();
     }
 
+    /**
+     * Get Username store in token
+     * @param token token of user
+     * @return String
+     */
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
+    /**
+     * Verify a status of token
+     * @param authToken token of user
+     * @return boolean
+     */
     public boolean validateJwtToken(String authToken) {
         try {
             Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(authToken);
@@ -54,6 +71,19 @@ public class JwtUtils {
             logger.error("JWT claims string is empty: {}", exception.getMessage());
         }
         return false;
+    }
+
+    /**
+     * Get Token in header
+     * @param request full content of request
+     * @return String
+     */
+    public String parseJwt(HttpServletRequest request) {
+        String headerAuth = request.getHeader("Authorization");
+        if (StringUtils.hasText(headerAuth) && headerAuth.startsWith("Bearer ")) {
+            return headerAuth.substring(7);
+        }
+        return null;
     }
 
 }

@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RequestMapping("/api/auth/")
-@CrossOrigin(origins = "*")
+@CrossOrigin
 @RestController
 public class AuthController {
 
@@ -25,5 +26,10 @@ public class AuthController {
     @PostMapping("sign-up")
     public ResponseEntity<?> signup(@Valid @RequestBody SignUpRequest signUpRequest) {
         return authService.signUp(signUpRequest);
+    }
+
+    @GetMapping("verify-token/{token}")
+    public ResponseEntity<?> verifyToken(@PathVariable String token, HttpServletRequest request) {
+        return authService.verifyToken(token, request);
     }
 }
