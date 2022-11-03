@@ -8,3 +8,6 @@
 
 ### User Access
 ![User Access API](user-test-url-api.png)
+
+### Verify Token
+![User Access API](verify-token-url.png)
